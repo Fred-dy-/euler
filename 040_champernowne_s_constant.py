@@ -38,6 +38,5 @@ def champernowne_digit(index: int) -> int:
 
 if __name__ == '__main__':
     limit = 6
-    print(champernowne_digit(15))
     pprint([champernowne_digit(pow(10, n)) for n in range(limit + 1)])
     pprint(reduce(lambda x, y: x * y, [champernowne_digit(pow(10, n)) for n in range(limit + 1)]))
