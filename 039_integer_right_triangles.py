@@ -4,20 +4,24 @@ Created on 24 Jul 2017
 @author: fgurkov1
 '''
 from pprint import pprint
+from _collections import defaultdict
+from math import sqrt
 
-
-def count_triangles(p: int) -> int:
-    count = 0
-    
-    for a in range(1, p // 2):
-        for b in range(1, a):
-            c = p - a - b
-            if a * a + b * b == c * c:
-                count += 1
-    return count
-
-
+def squares(limit: int):
+    p_map = defaultdict(lambda: 0)
+    max_p = 0
+    max_count = 0
+    for c in range(2, limit // 2):
+        for a in range(1, c):
+            b = int(sqrt(c * c - a * a))
+            if a >= b and a * a + b * b == c * c:
+                p = a + b + c
+                p_map[p] += 1
+                if p_map[p] > max_count:
+                    max_count = p_map[p]
+                    max_p = p
+    return (max_p, max_count)
+                
 if __name__ == '__main__':
-    print(count_triangles(120))
     limit = 1000
-    pprint(max([(count_triangles(p), p) for p in range (limit + 1)]))
+    pprint(squares(limit))
