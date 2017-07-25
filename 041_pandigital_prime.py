@@ -1,12 +1,11 @@
 '''
-Created on 11 Jun 2017
+Created on 25 Jul 2017
 
 @author: fgurkov1
 '''
 from typing import List
-from pprint import pprint
 from _collections import defaultdict
-import sys
+from math import sqrt
 
 class State(object):
     
@@ -61,20 +60,20 @@ class LexPerm(object):
             next_state.i = 0
             next_state.elements = elements[i:]
 
+def is_prime(n: int) -> bool:
+    for d in range(2, int(sqrt(n)) + 1):
+        if n % d == 0:
+            return False
+    return True
+
+def find_prime() -> int:
+    for n in reversed(range(1, 10)):
+        for digits in LexPerm(reversed(range(1, n + 1)), True, True):
+            number = 0
+            for d in digits:
+                number = number * 10 + d
+            if is_prime(number):
+                return number
+
 if __name__ == '__main__':
-    """permutator = LexPerm([d for d in range(10)])
-    for i in range(1000000):
-        permutation = next(permutator)
-        pprint("".join([str(element) for element in permutation]))
-    permutator = LexPerm("aba", True)
-    for p in permutator:
-        pprint("".join([str(element) for element in p]))
-    """
-    t = int(next(sys.stdin))
-    for i in range(t):
-        line = next(sys.stdin)
-        tokens = line.split(" ")
-        permutator = LexPerm(tokens[0], True)
-        for j in range(int(tokens[1])):
-            permutation = next(permutator)
-        pprint("".join([str(element) for element in permutation]))
+    print(find_prime())
