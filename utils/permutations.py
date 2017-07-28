@@ -14,11 +14,14 @@ class State(object):
 
 class LexPerm(object):
     
-    def __init__(self, elements:List, unique = False, ordered = False):
+    def __init__(self, elements:List, size = 0, unique = False, ordered = False):
         self.elements = list(elements)
         if not ordered:
             self.elements.sort()
-        self.current = list(self.elements)
+        self.size = size
+        if self.size < 1 or self.size > len(elements):
+            self.size = len(elements)
+        self.current = list(self.elements[:self.size])
         self.states = defaultdict(lambda:State())
         self.reset_state(0, self.elements)
         self.has_more = True
@@ -39,7 +42,7 @@ class LexPerm(object):
 
     def permutate(self, position:int):
         state = self.states[position]
-        if len(state.elements) == 0:
+        if len(state.elements) == 0 or position == self.size:
             return True
         self.current[position] = state.elements[state.i]
         if self.permutate(position + 1):
